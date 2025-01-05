@@ -1,4 +1,5 @@
 package views;
+
 import controllers.LoginController;
 import models.EmployeesDao;
 import models.Employees;
@@ -8,19 +9,19 @@ import models.Employees;
  * @author Ana
  */
 public class LoginView extends javax.swing.JFrame {
-    
+
     Employees employee = new Employees();
     EmployeesDao employee_dao = new EmployeesDao();
-    
+
     public LoginView() {
         initComponents();
         //llamar al controlador del login
         LoginController employee_login = new LoginController(employee, employee_dao, this);
-        setSize(930,415);
+        setSize(930, 415);
         setResizable(false);
-       setTitle("Ingresar al sistema");
-       setLocationRelativeTo(null);
-       this.repaint();
+        setTitle("Ingresar al sistema");
+        setLocationRelativeTo(null);
+        this.repaint();
     }
 
     /**

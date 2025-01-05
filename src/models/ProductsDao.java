@@ -157,6 +157,11 @@ public class ProductsDao {
             pst.setInt(1, code);
             rs = pst.executeQuery();
 
+            if (rs.next()) {
+                product.setId(rs.getInt("id"));
+                product.setName(rs.getString("name"));
+            }
+
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
@@ -187,12 +192,13 @@ public class ProductsDao {
     //Actualizar stock
     public boolean updateStockQuery(int amount, int product_id) {
         String query = "UPDATE products SET product_quantity = ? WHERE id = ?";
+
         try {
             conn = cn.getConnection();
             pst = conn.prepareStatement(query);
             pst.setInt(1, amount);
             pst.setInt(2, product_id);
-            rs = pst.executeQuery();
+            pst.execute();
             return true;
 
         } catch (SQLException e) {

@@ -20,8 +20,8 @@ public class PurchasesDao {
 
     //registrar compra
     public boolean registerPurchaseQuery(int supplier_id, int employee_id, double total) {
-        String query = "INSERT INTO purchases (supplier_id, employee_id, total, created)"
-                + "VALUES (?,?,?.?)";
+        String query = "INSERT INTO purchases(supplier_id,employee_id, total, created) "
+                + "VALUES (?,?,?,?)";
 
         Timestamp datetime = new Timestamp(new Date().getTime());
 
@@ -36,7 +36,7 @@ public class PurchasesDao {
             return true;
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "error al insertar la compra");
+            JOptionPane.showMessageDialog(null, "error al insertar la compra" + e);
             return false;
         }
 
@@ -46,25 +46,24 @@ public class PurchasesDao {
     public boolean registerPurchaseDetailQuery(int purchase_id, double purchase_price, int purchase_amount,
             double purchase_subtotal, int product_id) {
 
-        String query = "INSERT INTO purchase_details (purchase_id, purchase_id, purchase_price, purchase_amount,"
-                + "purchase_subtotal, purchase_date, product_id) VALUES (?,?,?,?,?,?)";
+        String query = "INSERT INTO purchase_details (purchase_id, purchase_price, purchase_amount,"
+                + "purchase_subtotal, product_id) VALUES (?,?,?,?,?)";
 
         Timestamp datetime = new Timestamp(new Date().getTime());
 
         try {
             conn = cn.getConnection();
             pst = conn.prepareStatement(query);
-            pst.setInt(1, product_id);
+            pst.setInt(1, purchase_id);
             pst.setDouble(2, purchase_price);
             pst.setInt(3, purchase_amount);
             pst.setDouble(4, purchase_subtotal);
-            pst.setTimestamp(5, datetime);
-            pst.setInt(6, product_id);
+            pst.setInt(5, product_id);
             pst.execute();
             return true;
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "error al registrar el detalle de la comprar");
+            JOptionPane.showMessageDialog(null, "error al registrar el detalle de la comprar" + e);
             return false;
         }
 

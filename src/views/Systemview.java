@@ -4,6 +4,7 @@ import controllers.CategoriesController;
 import controllers.CustomersController;
 import controllers.EmployeesController;
 import controllers.ProductsController;
+import controllers.PurchasesController;
 import controllers.SettingsController;
 import controllers.SuppliersController;
 import models.Categories;
@@ -16,6 +17,8 @@ import static models.EmployeesDao.full_name_user;
 import static models.EmployeesDao.rol_user;
 import models.Products;
 import models.ProductsDao;
+import models.Purchases;
+import models.PurchasesDao;
 import models.SupplierDao;
 import models.Suppliers;
 
@@ -37,6 +40,11 @@ public class Systemview extends javax.swing.JFrame {
     //productos
     Products product = new Products();
     ProductsDao productDao = new ProductsDao();
+    
+    //compras
+    Purchases purchase = new Purchases();
+    PurchasesDao purchaseDao = new PurchasesDao();
+    
 
     public Systemview() {
         initComponents();
@@ -65,9 +73,13 @@ public class Systemview extends javax.swing.JFrame {
         CategoriesController categories_section = new CategoriesController(category, categoriesDao, this);
         categories_section.listAllCategories();
 
-        //controllador de productos
+        //controlador de productos
         ProductsController product_section = new ProductsController(product, productDao, this);
         product_section.listAllProducts();
+        
+        //controlador compras
+        PurchasesController purchase_section = new  PurchasesController(purchase, purchaseDao, this);
+
     }
 
     //metodo para mostrar nombre y rol del empleado(en los labels)
@@ -819,7 +831,7 @@ public class Systemview extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(purchases_table);
 
-        jPanel5.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, 910, 110));
+        jPanel5.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 330, 910, 110));
 
         jTabbedPane.addTab("Compras", jPanel5);
 
@@ -1867,7 +1879,7 @@ public class Systemview extends javax.swing.JFrame {
     public javax.swing.JButton btn_update_supplier;
     public javax.swing.JTable categories_table;
     public javax.swing.JComboBox<Object> cmb_product_category;
-    public javax.swing.JComboBox<String> cmb_purchase_supplier;
+    public javax.swing.JComboBox<Object> cmb_purchase_supplier;
     public javax.swing.JComboBox<String> cmb_rol;
     public javax.swing.JComboBox<String> cmb_supplier_city;
     public javax.swing.JTable customers_table;
@@ -2015,12 +2027,12 @@ public class Systemview extends javax.swing.JFrame {
     public javax.swing.JTextField txt_product_name;
     public javax.swing.JTextField txt_product_unit_price;
     public javax.swing.JTextField txt_purchase_amount;
-    private javax.swing.JTextField txt_purchase_id;
+    public javax.swing.JTextField txt_purchase_id;
     public javax.swing.JTextField txt_purchase_price;
     public javax.swing.JTextField txt_purchase_product_code;
-    private javax.swing.JTextField txt_purchase_product_name;
-    private javax.swing.JTextField txt_purchase_subtotal;
-    private javax.swing.JTextField txt_purchase_total_to_pay;
+    public javax.swing.JTextField txt_purchase_product_name;
+    public javax.swing.JTextField txt_purchase_subtotal;
+    public javax.swing.JTextField txt_purchase_total_to_pay;
     public javax.swing.JTextField txt_sale_customer_id;
     public javax.swing.JTextField txt_sale_customer_name;
     public javax.swing.JTextField txt_sale_price;

@@ -44,6 +44,7 @@ public class EmployeesDao {
             if (rs.next()) {
                 employee = new Employees();
                 employee.setId(rs.getInt("id"));
+                id_user = employee.getId();
                 employee.setFull_name(rs.getString("full_name"));
                 full_name_user = employee.getFull_name();
                 employee.setUsername(rs.getString("username"));
