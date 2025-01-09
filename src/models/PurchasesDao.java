@@ -91,8 +91,7 @@ public class PurchasesDao {
     //listar todas las compras realizadas
     public List listallPurchaseQuery() {
         List<Purchases> list_purchase = new ArrayList();
-        String query = "SELECT pu.*, su.name AS supplier_name FROM purchases pu, suppliers su"
-                + "WHERE pu.supplier_id = su.id ORDER BY pu.id ASC";
+        String query = "SELECT pu.*, su.name AS supplier_name FROM purchases pu, suppliers su WHERE pu.supplier_id = su.id ORDER BY pu.id ASC";
 
         try {
             conn = cn.getConnection();

@@ -24,17 +24,20 @@ public class LoginController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //obtener los datos enviados de la vista
         String user = login_view.txt_username.getText().trim();
         String pass = String.valueOf(login_view.txt_password.getPassword());
 
-        //chequeamos si en la vista se presiono el boton
         if (e.getSource() == login_view.btn_enter) {
-            //validar campos vacios
             if (!user.isEmpty() && !pass.isEmpty()) {
-                //pasar los parametros al metodo login
                 employee = employees_dao.loginQuery(user, pass);
-                //verificar existencia del usuario
+
+                // Verificar si employee es null
+                if (employee == null) {
+                    JOptionPane.showMessageDialog(null, "usuario o contraseña incorrecta");
+                    return; // Salir del método si el empleado es null
+                }
+
+                // Ahora podemos llamar a getUsername() sin riesgo de NullPointerException
                 if (employee.getUsername() != null) {
                     if (employee.getRol().equals("Administrador")) {
                         Systemview admin = new Systemview();
@@ -44,15 +47,10 @@ public class LoginController implements ActionListener {
                         aux.setVisible(true);
                     }
                     this.login_view.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(null, "usuario o contraseña incorrecta");
                 }
-
             } else {
                 JOptionPane.showMessageDialog(null, "los campos estan vacios");
             }
         }
-
     }
-
 }

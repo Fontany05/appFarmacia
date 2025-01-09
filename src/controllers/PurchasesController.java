@@ -4,7 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import models.DynamikCombobox;
@@ -16,7 +19,7 @@ import models.Purchases;
 import models.PurchasesDao;
 import views.Systemview;
 
-public class PurchasesController implements KeyListener, ActionListener {
+public class PurchasesController implements KeyListener, ActionListener, MouseListener {
 
     private Purchases purchase;
     private PurchasesDao purchasesDao;
@@ -38,9 +41,13 @@ public class PurchasesController implements KeyListener, ActionListener {
         this.views.btn_add_product_to_buy.addActionListener(this);
         //btn comprar
         this.views.btn_confirm_purchase.addActionListener(this);
+        //btn eliminar compra
+        this.views.btn_remove_purchase.addActionListener(this);
         this.views.txt_purchase_product_code.addKeyListener(this);
         this.views.txt_purchase_price.addKeyListener(this);
-
+        this.views.btn_new_purchase.addActionListener(this);
+        this.views.jLabelPurchases.addMouseListener(this);
+        this.views.jLabelReports.addMouseListener(this);
     }
 
     @Override
@@ -54,7 +61,7 @@ public class PurchasesController implements KeyListener, ActionListener {
             }
 
             if (getIdSupplier != supplier_id) {
-                JOptionPane.showMessageDialog(null, "¡Ha cambiado el proveedor! Por favor, termine la compra actual o reinicie.");
+                JOptionPane.showMessageDialog(null, "¡Ha cambiado el proveedor! no puede comprar con otro proveedor en la misma compra");
                 return;
             }
 
@@ -121,6 +128,16 @@ public class PurchasesController implements KeyListener, ActionListener {
             }
         } else if (e.getSource() == views.btn_confirm_purchase) {
             insertPurchase();
+        } else if (e.getSource() == views.btn_remove_purchase) {
+            model = (DefaultTableModel) views.purchases_table.getModel();
+            model.removeRow(views.purchases_table.getSelectedRow());
+            calculatePurchase();
+            views.txt_purchase_product_code.requestFocus();
+
+        } else if (e.getSource() == views.btn_new_purchase) {
+            cleanTableTemp();
+            cleanFieldsPurchases();
+
         }
 
     }
@@ -141,10 +158,45 @@ public class PurchasesController implements KeyListener, ActionListener {
                 //registrar detalle de la compra
                 purchasesDao.registerPurchaseDetailQuery(purchase_id, purchase_price, purchase_amount, purchase_subtotal, product_id);
 
+                //cantidad de producto
+                product = productDao.searchId(product_id);
+                int amount = product.getProduct_quantity() + purchase_amount;
+
+                productDao.updateStockQuery(amount, product_id);
+
             }
-            JOptionPane.showMessageDialog(null, "compra generada con exito");
             cleanTableTemp();
+            JOptionPane.showMessageDialog(null, "compra generada con exito");
             cleanFieldsPurchases();
+
+        }
+    }
+
+    //mostrar compras realizadas
+    public void listAllPurchases() {
+        if (rol.equals("Administrador") || rol.equals("Auxiliar")) {
+            List<Purchases> list = purchasesDao.listallPurchaseQuery();
+
+            if (list == null || list.isEmpty()) {
+                // Manejar caso de lista vacía
+                return;
+            }
+
+            model = (DefaultTableModel) views.table_all_purchases.getModel();
+            // Limpiar tabla antes de cargar nuevos datos
+            model.setRowCount(0);
+
+            Object[] row = new Object[4];
+
+            for (int i = 0; i < list.size(); i++) {
+                row[0] = list.get(i).getId();
+                row[1] = list.get(i).getSupplier_name_product();
+                row[2] = list.get(i).getTotal();
+                row[3] = list.get(i).getCreated();
+                model.addRow(row);
+            }
+            views.table_all_purchases.setModel(model);
+
         }
     }
 
@@ -192,8 +244,45 @@ public class PurchasesController implements KeyListener, ActionListener {
         }
 
     }
-    //limpiar campos
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getSource() == views.jLabelPurchases) {
+            if (rol.equals("Administrador")) {
+                views.jTabbedPane.setSelectedIndex(1);
+                cleanTable();
+            } else {
+                views.jTabbedPane.setEnabledAt(1, false);
+                views.jLabelPurchases.setEnabled(false);
+                JOptionPane.showMessageDialog(null, "no tienes permisos para acceder a esta vista!");
+            }
+        } else if (e.getSource() == views.jLabelReports) {
+            views.jTabbedPane.setSelectedIndex(7);
+            listAllPurchases();
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    //limpiar campos
     public void cleanFieldsPurchases() {
         views.txt_purchase_product_name.setText("");
         views.txt_purchase_price.setText("");
@@ -225,10 +314,23 @@ public class PurchasesController implements KeyListener, ActionListener {
         // Mostrar el total formateado
         views.txt_purchase_total_to_pay.setText(String.valueOf(total));
     }
+
     //chequear porque no borrar los campos
     public void cleanTableTemp() {
-        for (int i = model.getRowCount() - 1; i >= 0; i--) {
+        DefaultTableModel temp = (DefaultTableModel) views.purchases_table.getModel();
+        for (int i = 0; i < temp.getRowCount(); i++) {
             temp.removeRow(i);
+            i = i - 1;
         }
     }
+
+    //limpiar tabla
+    public void cleanTable() {
+        for (int i = 0; i < model.getRowCount(); i++) {
+            model.removeRow(i);
+            i = i - 1;
+        }
+
+    }
+
 }
