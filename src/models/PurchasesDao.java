@@ -49,8 +49,6 @@ public class PurchasesDao {
         String query = "INSERT INTO purchase_details (purchase_id, purchase_price, purchase_amount,"
                 + "purchase_subtotal, product_id) VALUES (?,?,?,?,?)";
 
-        Timestamp datetime = new Timestamp(new Date().getTime());
-
         try {
             conn = cn.getConnection();
             pst = conn.prepareStatement(query);

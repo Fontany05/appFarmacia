@@ -166,9 +166,8 @@ public class PurchasesController implements KeyListener, ActionListener, MouseLi
 
             }
             cleanTableTemp();
-            JOptionPane.showMessageDialog(null, "compra generada con exito");
             cleanFieldsPurchases();
-
+            JOptionPane.showMessageDialog(null, "compra generada con exito");
         }
     }
 

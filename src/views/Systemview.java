@@ -5,6 +5,7 @@ import controllers.CustomersController;
 import controllers.EmployeesController;
 import controllers.ProductsController;
 import controllers.PurchasesController;
+import controllers.SalesController;
 import controllers.SettingsController;
 import controllers.SuppliersController;
 import models.Categories;
@@ -19,8 +20,11 @@ import models.Products;
 import models.ProductsDao;
 import models.Purchases;
 import models.PurchasesDao;
+import models.Sales;
+import models.SalesDao;
 import models.SupplierDao;
 import models.Suppliers;
+
 
 public class Systemview extends javax.swing.JFrame {
 
@@ -44,6 +48,10 @@ public class Systemview extends javax.swing.JFrame {
     //compras
     Purchases purchase = new Purchases();
     PurchasesDao purchaseDao = new PurchasesDao();
+    
+    //ventas
+    Sales sale = new Sales();
+    SalesDao saleDao = new SalesDao();
     
 
     public Systemview() {
@@ -79,7 +87,10 @@ public class Systemview extends javax.swing.JFrame {
         
         //controlador compras
         PurchasesController purchase_section = new  PurchasesController(purchase, purchaseDao, this);
-
+        purchase_section.listAllPurchases();
+        
+       SalesController sales_section = new SalesController(sale, saleDao, this);
+       sales_section.listAllSales();
     }
 
     //metodo para mostrar nombre y rol del empleado(en los labels)
@@ -111,6 +122,8 @@ public class Systemview extends javax.swing.JFrame {
         jLabelReports = new javax.swing.JLabel();
         jPanelSettings = new javax.swing.JPanel();
         jLabelSettings = new javax.swing.JLabel();
+        jPanelSales = new javax.swing.JPanel();
+        jLabelSales = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jTabbedPane = new javax.swing.JTabbedPane();
@@ -493,6 +506,29 @@ public class Systemview extends javax.swing.JFrame {
         );
 
         jPanel1.add(jPanelSettings, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 430, 200, 35));
+
+        jPanelSales.setBackground(new java.awt.Color(51, 51, 51));
+        jPanelSales.setForeground(new java.awt.Color(255, 255, 255));
+
+        jLabelSales.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabelSales.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelSales.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/ventas.png"))); // NOI18N
+        jLabelSales.setText("Ventas");
+
+        javax.swing.GroupLayout jPanelSalesLayout = new javax.swing.GroupLayout(jPanelSales);
+        jPanelSales.setLayout(jPanelSalesLayout);
+        jPanelSalesLayout.setHorizontalGroup(
+            jPanelSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelSales, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+        );
+        jPanelSalesLayout.setVerticalGroup(
+            jPanelSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelSalesLayout.createSequentialGroup()
+                .addComponent(jLabelSales, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 6, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(jPanelSales, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 200, 40));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 200, 580));
 
@@ -1951,6 +1987,7 @@ public class Systemview extends javax.swing.JFrame {
     public javax.swing.JLabel jLabelProducts;
     public javax.swing.JLabel jLabelPurchases;
     public javax.swing.JLabel jLabelReports;
+    public javax.swing.JLabel jLabelSales;
     public javax.swing.JLabel jLabelSettings;
     public javax.swing.JLabel jLabelSuppliers;
     private javax.swing.JPanel jPanel1;
@@ -1979,6 +2016,7 @@ public class Systemview extends javax.swing.JFrame {
     public javax.swing.JPanel jPanelProducts;
     public javax.swing.JPanel jPanelPurchases;
     public javax.swing.JPanel jPanelReports;
+    public javax.swing.JPanel jPanelSales;
     public javax.swing.JPanel jPanelSettings;
     public javax.swing.JPanel jPanelSuppleiers;
     private javax.swing.JScrollPane jScrollPane1;

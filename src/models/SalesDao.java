@@ -45,9 +45,8 @@ public class SalesDao {
     public boolean registerSaleDetailQuery(int product_id, double sale_id,
             int sale_quantity, double sale_price, double sale_subtotal) {
 
-        String query = "INSERT INTO sale_details (product_id, sale_id, sale_quantity, sale_price, sale_subtotal, sale_date) VALUES(?,?,?,?,?,?)";
-        Timestamp datetime = new Timestamp(new Date().getTime());
-
+        String query = "INSERT INTO sales_details (product_id, sale_id, sale_quantity,sale_price) VALUES(?,?,?,?)";
+     
         try {
             conn = cn.getConnection();
             pst = conn.prepareStatement(query);
@@ -55,8 +54,6 @@ public class SalesDao {
             pst.setDouble(2, sale_id);
             pst.setInt(3, sale_quantity);
             pst.setDouble(4, sale_price);
-            pst.setDouble(5, sale_subtotal);
-            pst.setTimestamp(6, datetime);
             pst.execute();
 
             return true;

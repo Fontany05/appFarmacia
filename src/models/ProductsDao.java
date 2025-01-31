@@ -148,7 +148,7 @@ public class ProductsDao {
 
     //buscar producto por codigo
     public Products searchCode(int code) {
-        String query = "SELECT pro.id, pro.name FROM products pro WHERE pro.code = ?";
+        String query = "SELECT pro.id, pro.name,pro.code, pro.unit_price, pro.product_quantity FROM products pro WHERE pro.code = ?";
         Products product = new Products();
 
         try {
@@ -160,6 +160,9 @@ public class ProductsDao {
             if (rs.next()) {
                 product.setId(rs.getInt("id"));
                 product.setName(rs.getString("name"));
+                product.setCode(rs.getInt("code"));
+                product.setUnit_price(rs.getDouble("unit_price"));
+                product.setProduct_quantity(rs.getInt("product_quantity"));
             }
 
         } catch (SQLException e) {

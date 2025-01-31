@@ -45,7 +45,7 @@ public class CustomersDao {
     }
 
     //listar todos los cliente
-    public List listAllCustomerQuery(String value) {
+    public List listCustomerQuery(String value) {
         List<Customers> list_customer = new ArrayList<>();
         String query = "SELECT * FROM customers ORDER BY id ASC";
         String query_search_customer = "SELECT * FROM customers WHERE id LIKE '%" + value + "%'";
@@ -78,7 +78,7 @@ public class CustomersDao {
 
     //modificar datos de cliente
     public boolean updateCostumerQuery(Customers customer) {
-        
+
         String query = "UPDATE customers SET full_name = ?, address = ?, telephone = ?, email = ?, updated = ? "
                 + "WHERE id = ?";
 
@@ -116,8 +116,23 @@ public class CustomersDao {
         }
     }
 
-    public List<Customers> listAllCustomers(String text) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    //buscar cliente
+    public Customers searchCustomer(int id) {
+        String query = "SELECT cu.id, cu.full_name FROM customers cu WHERE cu.id = ?"; //solo traea id y name
+        Customers customer = new Customers();
+        try {
+            conn = cn.getConnection();
+            pst = conn.prepareStatement(query);
+            pst.setInt(1, id); //este es el id pasado como parámetro para buscar
+            rs = pst.executeQuery();
+            if (rs.next()) { //para agregar a cada campo el resultado de la consulta
+                customer.setId(rs.getInt("id"));
+                customer.setFull_name(rs.getString("full_name"));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        return customer;
     }
 
 }

@@ -63,7 +63,7 @@ public class SupplierDao {
                 rs = pst.executeQuery();   
             }
             
-              while(rs.next()){
+            while(rs.next()){
             Suppliers supplier = new Suppliers();
             supplier.setId(rs.getInt("id"));
             supplier.setName(rs.getString("name"));

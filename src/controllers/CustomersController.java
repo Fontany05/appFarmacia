@@ -128,7 +128,7 @@ public class CustomersController implements ActionListener, MouseListener, KeyLi
     //listar clientes
 
     public void listAllCustomers() {
-        List<Customers> list = customerDao.listAllCustomerQuery(views.txt_search_customer.getText());
+        List<Customers> list = customerDao.listCustomerQuery(views.txt_search_customer.getText());
         model = (DefaultTableModel) views.customers_table.getModel();
         // Limpiar tabla antes de cargar nuevos datos
         model.setRowCount(0);
