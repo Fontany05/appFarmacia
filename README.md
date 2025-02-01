@@ -7,7 +7,7 @@ Aplicacion de escritorio la cual permite gestionar el inventario de una farmacia
 
 ## Demo
 
-[DEMO](falta enlace)
+[DEMO](https://youtu.be/GgzvZdAb1zo?si=SdzN9W0QbxhI168o)
 
 
 ## Screenshots
