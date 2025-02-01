@@ -63,7 +63,6 @@ public class SalesController implements ActionListener, MouseListener, KeyListen
             model = (DefaultTableModel) views.sales_table.getModel();
             model.removeRow(views.sales_table.getSelectedRow());
             calculateSales();
-            views.txt_sale_product_code.requestFocus();
         } else if (e.getSource() == views.btn_add_product_sale) {
             // Validate input fields
             if (views.txt_sale_quantity.getText().isEmpty()
@@ -74,9 +73,9 @@ public class SalesController implements ActionListener, MouseListener, KeyListen
             }
 
             int amount = Integer.parseInt(views.txt_sale_quantity.getText());
+            int sale_id = Integer.parseInt(views.txt_sale_product_id.getText());
             String product_name = views.txt_sale_product_name.getText();
             double price = Double.parseDouble(views.txt_sale_price.getText());
-            int sale_id = Integer.parseInt(views.txt_sale_product_id.getText());
             double subtotal = amount * price;
             int stock = Integer.parseInt(views.txt_sale_stock.getText());
             String full_name = views.txt_sale_customer_name.getText();
@@ -171,52 +170,72 @@ public class SalesController implements ActionListener, MouseListener, KeyListen
     }
 
     private void insertSale() {
-
-        int customer_id = Integer.parseInt(views.txt_sale_customer_id.getText());
-
-        int employee_id = id_user;
-
-        double total = Double.parseDouble(views.txt_sale_total_to_pay.getText());
-
-        if (saleDao.registerSaleQuery(customer_id, employee_id, total)) {
-
-            Products product = new Products();
-
-            ProductsDao productDao = new ProductsDao();
-
-            int sale_id = saleDao.saleId();
-
-            // registerPurchaseDetailQuery();
-            for (int i = 0; i < views.sales_table.getRowCount(); i++) {
-
-                int product_id = Integer.parseInt(views.sales_table.getValueAt(i, 0).toString());
-
-                int sale_quantity = Integer.parseInt(views.sales_table.getValueAt(i, 2).toString());
-
-                double sale_price = Double.parseDouble(views.sales_table.getValueAt(i, 3).toString());
-
-                double sale_subtotal = sale_quantity * sale_price;
-
-                saleDao.registerSaleDetailQuery(product_id, sale_price, sale_quantity, sale_price, sale_subtotal);
-
-                //Traer la cantidad de productos
-                product = productDao.searchId(product_id);
-
-                //Obtener cantidad actual y restar la cantidad comprada
-                int amount = product.getProduct_quantity() - sale_quantity;
-
-                productDao.updateStockQuery(amount, product_id);
-
+        try {
+            // Validar que los campos no estén vacíos
+            if (views.txt_sale_customer_id.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "El ID del cliente no puede estar vacío");
+                return;
             }
 
-            JOptionPane.showMessageDialog(null, "Venta generada");
+            if (views.txt_sale_total_to_pay.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "El total a pagar no puede estar vacío");
+                return;
+            }
 
-            cleanTableTemp();
+            // Validar que la tabla tenga elementos
+            if (views.sales_table.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "No hay productos en la venta");
+                return;
+            }
 
-            cleanAllFieldsSales();
+            // Convertir valores después de validar
+            int customer_id = Integer.parseInt(views.txt_sale_customer_id.getText().trim());
+            int employee_id = id_user;
+            double total = Double.parseDouble(views.txt_sale_total_to_pay.getText().trim());
 
+            if (saleDao.registerSaleQuery(customer_id, employee_id, total)) {
+                Products product = new Products();
+                ProductsDao productDao = new ProductsDao();
+                int sale_id = saleDao.saleId();
+
+                for (int i = 0; i < views.sales_table.getRowCount(); i++) {
+                    // Validar que los valores de la tabla no sean nulos
+                    Object productIdObj = views.sales_table.getValueAt(i, 0);
+                    Object quantityObj = views.sales_table.getValueAt(i, 2);
+                    Object priceObj = views.sales_table.getValueAt(i, 3);
+
+                    if (productIdObj == null || quantityObj == null || priceObj == null) {
+                        JOptionPane.showMessageDialog(null, "Datos inválidos en la fila " + (i + 1));
+                        continue;
+                    }
+
+                    int product_id = Integer.parseInt(productIdObj.toString());
+                    int sale_quantity = Integer.parseInt(quantityObj.toString());
+                    double sale_price = Double.parseDouble(priceObj.toString());
+                    double sale_subtotal = sale_quantity * sale_price;
+
+                    // Validar stock antes de procesar
+                    product = productDao.searchId(product_id);
+                    if (product.getProduct_quantity() < sale_quantity) {
+                        JOptionPane.showMessageDialog(null, "Stock insuficiente para el producto ID: " + product_id);
+                        return;
+                    }
+
+                    saleDao.registerSaleDetailQuery(product_id, sale_price, sale_quantity, sale_price, sale_subtotal);
+
+                    int amount = product.getProduct_quantity() - sale_quantity;
+                    productDao.updateStockQuery(amount, product_id);
+                }
+
+                cleanTableTemp();
+                cleanAllFieldsSales();
+                JOptionPane.showMessageDialog(null, "Venta generada exitosamente");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Error al procesar los números: " + e.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al procesar la venta: " + e.getMessage());
         }
-
     }
 
     @Override

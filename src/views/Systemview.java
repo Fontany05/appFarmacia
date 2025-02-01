@@ -120,8 +120,6 @@ public class Systemview extends javax.swing.JFrame {
         jLabelCategories = new javax.swing.JLabel();
         jPanelReports = new javax.swing.JPanel();
         jLabelReports = new javax.swing.JLabel();
-        jPanelSettings = new javax.swing.JPanel();
-        jLabelSettings = new javax.swing.JLabel();
         jPanelSales = new javax.swing.JPanel();
         jLabelSales = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -483,30 +481,6 @@ public class Systemview extends javax.swing.JFrame {
 
         jPanel1.add(jPanelReports, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, 200, 35));
 
-        jPanelSettings.setBackground(new java.awt.Color(51, 51, 51));
-
-        jLabelSettings.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabelSettings.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelSettings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/configuracion.png"))); // NOI18N
-        jLabelSettings.setText("   Configuracion");
-
-        javax.swing.GroupLayout jPanelSettingsLayout = new javax.swing.GroupLayout(jPanelSettings);
-        jPanelSettings.setLayout(jPanelSettingsLayout);
-        jPanelSettingsLayout.setHorizontalGroup(
-            jPanelSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelSettingsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabelSettings, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE))
-        );
-        jPanelSettingsLayout.setVerticalGroup(
-            jPanelSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelSettingsLayout.createSequentialGroup()
-                .addComponent(jLabelSettings, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 1, Short.MAX_VALUE))
-        );
-
-        jPanel1.add(jPanelSettings, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 430, 200, 35));
-
         jPanelSales.setBackground(new java.awt.Color(51, 51, 51));
         jPanelSales.setForeground(new java.awt.Color(255, 255, 255));
 
@@ -519,16 +493,19 @@ public class Systemview extends javax.swing.JFrame {
         jPanelSales.setLayout(jPanelSalesLayout);
         jPanelSalesLayout.setHorizontalGroup(
             jPanelSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabelSales, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+            .addGroup(jPanelSalesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelSales, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelSalesLayout.setVerticalGroup(
             jPanelSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelSalesLayout.createSequentialGroup()
                 .addComponent(jLabelSales, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 6, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jPanelSales, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 200, 40));
+        jPanel1.add(jPanelSales, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 430, 200, 40));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 200, 580));
 
@@ -1988,7 +1965,6 @@ public class Systemview extends javax.swing.JFrame {
     public javax.swing.JLabel jLabelPurchases;
     public javax.swing.JLabel jLabelReports;
     public javax.swing.JLabel jLabelSales;
-    public javax.swing.JLabel jLabelSettings;
     public javax.swing.JLabel jLabelSuppliers;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -2017,7 +1993,6 @@ public class Systemview extends javax.swing.JFrame {
     public javax.swing.JPanel jPanelPurchases;
     public javax.swing.JPanel jPanelReports;
     public javax.swing.JPanel jPanelSales;
-    public javax.swing.JPanel jPanelSettings;
     public javax.swing.JPanel jPanelSuppleiers;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
